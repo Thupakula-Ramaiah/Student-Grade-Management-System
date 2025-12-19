@@ -24,7 +24,7 @@ Student-Grade-Management-System/
 ▶️ How to Run
 
 Clone the repository
-git clone https://github.com/your-username/Student-Grade-Management-System.git
+git clone https://github.com/Thupakula-Ramaiah/Student-Grade-Management-System.git
 Navigate to the project folder
 cd Student-Grade-Management-System
 
