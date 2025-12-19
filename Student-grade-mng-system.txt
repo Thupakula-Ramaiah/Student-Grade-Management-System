@@ -1,0 +1,98 @@
+import json
+
+# Load data from file if it exists
+def load_data():
+    global students
+    try:
+        with open("students.json", "r") as f:
+            students = json.load(f)
+    except FileNotFoundError:
+        students = {}
+
+# Save data to file
+def save_data():
+    with open("students.json", "w") as f:
+        json.dump(students, f)
+
+# Show main menu
+def show_menu():
+    print("\n=== Student Grade Management System ===")
+    print("1. Add Student")
+    print("2. View All Students")
+    print("3. Update Student Grades")
+    print("4. Delete Student")
+    print("5. Show Statistics")
+    print("6. Exit")
+
+# Add a student
+def add_student():
+    name = input("Enter student name: ")
+    grades = input("Enter grades separated by spaces: ").split()
+    grades = list(map(float, grades))
+    students[name] = grades
+    save_data()
+    print("Student added successfully.")
+
+# View all students
+def view_students():
+    if not students:
+        print("No students found.")
+        return
+    for name, grades in students.items():
+        avg = sum(grades) / len(grades) if grades else 0
+        print(f"Name: {name}, Grades: {grades}, Average: {avg:.2f}")
+
+# Update student grades
+def update_student():
+    name = input("Enter the student name to update: ")
+    if name in students:
+        new_grades = input("Enter new grades separated by spaces: ").split()
+        students[name] = list(map(float, new_grades))
+        save_data()
+        print("Grades updated.")
+    else:
+        print("Student not found.")
+
+# Delete a student
+def delete_student():
+    name = input("Enter student name to delete: ")
+    if name in students:
+        del students[name]
+        save_data()
+        print("Student deleted.")
+    else:
+        print("Student not found.")
+
+# Show average, highest, lowest
+def show_statistics():
+    all_grades = [grade for grades in students.values() for grade in grades]
+    if not all_grades:
+        print("No grades available.")
+        return
+    print(f"Average Grade: {sum(all_grades)/len(all_grades):.2f}")
+    print(f"Highest Grade: {max(all_grades)}")
+    print(f"Lowest Grade: {min(all_grades)}")
+
+# Main program
+students = {}
+load_data()
+
+while True:
+    show_menu()
+    choice = input("Enter your choice (1-6): ")
+
+    if choice == "1":
+        add_student()
+    elif choice == "2":
+        view_students()
+    elif choice == "3":
+        update_student()
+    elif choice == "4":
+        delete_student()
+    elif choice == "5":
+        show_statistics()
+    elif choice == "6":
+        print("Exiting program. Goodbye!")
+        break
+    else:
+        print("Invalid choice. Please enter a number from 1 to 6.")
